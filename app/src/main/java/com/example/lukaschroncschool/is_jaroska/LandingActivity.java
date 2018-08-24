@@ -19,7 +19,13 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import com.example.lukaschroncschool.is_jaroska.SimpleCrypto;
+
+import com.orhanobut.hawk.Hawk;
+import com.orhanobut.hawk.NoEncryption;
+
 import java.io.IOException;
+import java.util.Random;
 
 public class LandingActivity extends AppCompatActivity {
     public EditText username;
@@ -36,6 +42,11 @@ public class LandingActivity extends AppCompatActivity {
         username = findViewById(R.id.username);
         password = findViewById(R.id.password);
         save = findViewById(R.id.save);
+        Hawk.init(this).setEncryption(new NoEncryption()).build();
+
+        if( Hawk.contains("username") || Hawk.contains("password")){
+            new PostThatShit().execute(new MyTaskParams(Hawk.get("username").toString(),Hawk.get("password").toString()));
+        }
 
     }
 
@@ -69,6 +80,10 @@ public class LandingActivity extends AppCompatActivity {
                 Elements elements = document.select("form");
 
                 if (elements.isEmpty()) {
+                    if(save.isChecked()){
+                        Hawk.put("username",usr);
+                        Hawk.put("password",pass);
+                    }
                     startActivity(new Intent(LandingActivity.this, BulletinActivity.class));
                 } else {
                     Element alert = document.select("div.alert.alert-warning strong").first();
@@ -77,6 +92,8 @@ public class LandingActivity extends AppCompatActivity {
                 }
 
             } catch (IOException e) {
+                e.printStackTrace();
+            } catch (Exception e) {
                 e.printStackTrace();
             }
             return null;
@@ -89,11 +106,11 @@ public class LandingActivity extends AppCompatActivity {
         }
     }
 
-    public class MyTaskParams {
+    private class MyTaskParams {
         String username;
         String password;
 
-        public MyTaskParams(String username, String password){
+        private MyTaskParams(String username, String password){
             this.username = username;
             this.password = password;
 
