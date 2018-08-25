@@ -1,3 +1,22 @@
 <resources>
     <string name="app_name">is_jaroska</string>
+    <string name="title_activity_drawer">DrawerActivity</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_bulletin">BulletinActivity</string>
+    <string name="bulletin">Nástěnky</string>
+    <string name="supl">Suplování</string>
+    <string name="schedule_class">Rozvrh</string>
+    <string name="schedule_all">Všechny rozvrhy</string>
+    <string name="grades">Klasifikace</string>
+    <string name="settings">Nastavení</string>
+    <string name="logout">Odhlásit se</string>
+    <string name="no_internet">Žádné připojení k internetu</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
