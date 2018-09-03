@@ -30,6 +30,8 @@ public class LoginActivity extends AppCompatActivity {
     public CheckBox save;
 
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,13 +39,10 @@ public class LoginActivity extends AppCompatActivity {
 
         Hawk.init(this).setEncryption(new NoEncryption()).build();
 
-        if(isInternetAvailable()){
             if( Hawk.contains("logged_in")){
                 new PostThatShit().execute(new MyTaskParams(Hawk.get("username").toString(),Hawk.get("password").toString()));
             }
-        } else {
-            Snackbar.make(findViewById(R.id.loginactivity),"Žádné připojení k internetu",Snackbar.LENGTH_LONG).show();
-        }
+
 
         username = findViewById(R.id.username);
         password = findViewById(R.id.password);
@@ -52,11 +51,9 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void Login(View v){
-        if(isInternetAvailable()) {
+
             new PostThatShit().execute(new MyTaskParams(username.getText().toString(), password.getText().toString()));
-        } else {
-            Snackbar.make(findViewById(R.id.loginactivity),"Žádné připojení k internetu",Snackbar.LENGTH_LONG).show();
-        }
+
     }
 
     private class PostThatShit extends AsyncTask<MyTaskParams, String, String> {
@@ -80,7 +77,6 @@ public class LoginActivity extends AppCompatActivity {
                         .data("formPassword", pass)
                         .post();
 
-                Log.d("res", document.toString());
                 Elements elements = document.select("form");
 
                 if (elements.isEmpty()) {
@@ -98,16 +94,17 @@ public class LoginActivity extends AppCompatActivity {
 
             } catch (IOException e) {
                 e.printStackTrace();
-            } catch (Exception e) {
-                e.printStackTrace();
+                return "no_internet";
             }
             return null;
 
         }
         protected void onPostExecute(String result){
-            if (result != null) {
+            if (result != null || result == "no_internet") {
+                Snackbar.make(findViewById(R.id.loginactivity),"Žádné připojení k internetu",Snackbar.LENGTH_LONG).show();
+            }
+            else if(result != null){
                 Snackbar.make(findViewById(R.id.loginactivity),result,Snackbar.LENGTH_LONG).show();
-
             }
         }
     }
@@ -122,14 +119,5 @@ public class LoginActivity extends AppCompatActivity {
 
         }
     }
-    public boolean isInternetAvailable() {
-        try {
-            InetAddress ipAddr = InetAddress.getByName("google.com");
-            //You can replace it with your name
-            return !ipAddr.equals("");
 
-        } catch (Exception e) {
-            return false;
-        }
-    }
 }

@@ -3,26 +3,29 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_height="match_parent"
     android:layout_width="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="#E8E8E8"
+    android:layout_margin="10dp">
     <TextView
         android:id="@+id/card_header"
         android:textColor="@color/colorPrimary"
         android:textSize="26sp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"/>
 
     <TextView
         android:id="@+id/card_body"
         android:layout_width="match_parent"
-        android:textColor="@color/colorPrimary"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"/>
 
     <TextView
         android:id="@+id/card_footer"
+        android:layout_margin="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="18sp"
-        android:textColor="@color/colorPrimary"
- />
+        android:textSize="12sp"
+        android:textColor="@color/colorPrimaryDark" />
 
 </LinearLayout>

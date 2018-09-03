@@ -28,7 +28,7 @@
         <activity
             android:name=".BulletinActivity"
             android:label="@string/bulletin"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
     </application>
 
 </manifest>
