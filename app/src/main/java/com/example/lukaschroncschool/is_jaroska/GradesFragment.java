@@ -1,6 +1,7 @@
 package com.example.lukaschroncschool.is_jaroska;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -9,8 +10,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.appizona.yehiahd.fastsave.FastSave;
 
@@ -24,17 +25,10 @@ import java.util.ArrayList;
 import java.util.Map;
 
 
-public class BulletinFragment extends Fragment {
-
-    public BulletinFragment() {
-        // Required empty public constructor
-    }
-
-
+public class GradesFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
 
     }
 
@@ -42,61 +36,55 @@ public class BulletinFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View rootView = inflater.inflate(R.layout.fragment_bulletin, container, false);
-        // Initializing ListView and setting adapter
-        ArrayList<Card> arrayOfUsers = new ArrayList<Card>();
-        CardAdapter adapter = new CardAdapter(getActivity(), arrayOfUsers);
-        ListView listView = (ListView) rootView.findViewById(R.id.listview);
-        listView.setAdapter(adapter);
-
+        View rootView = inflater.inflate(R.layout.fragment_grades, container, false);
         FastSave.init(getContext());
+        ListView listview = (ListView) rootView.findViewById(R.id.grades_list);
+        //Methods m = new Methods(getActivity());
+        //m.RunCookies();
+        listview.setAdapter(new LinkAdapter(getContext(),new ArrayList<Link>()));
+        new getCards().execute(FastSave.getInstance().getObject("login_cookie",Map.class));
 
-        Map<String,String> login_cookie = FastSave.getInstance().getObject("login_cookie",Map.class);
-        new getCards().execute(login_cookie);
+
+
         return rootView;
+
     }
     private class getCards extends AsyncTask<Map<String,String>, String, ArrayList<Card>> {
         private BulletinFragment parent;
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+
         }
 
         @Override
         protected ArrayList<Card> doInBackground(Map<String,String>... params) {
-            ArrayList<Card> card_array = new ArrayList<Card>();
+            ArrayList<Card> result = new ArrayList<Card>();
             Document doc;
             doc = Connect(params[0]);
             if(doc.select("form").isEmpty()) {
-                Log.d("logged_in_with_class",doc.toString());
-
                 Elements cards = doc.select("div.jumbotron div.card");
-                for(Element card : cards){
-                    String header = Jsoup.parse(card.selectFirst("div.card-header").text()).text();
-                    String body = Jsoup.parse(card.selectFirst("div.card-body").text()).text();
-                    String footer = Jsoup.parse(card.selectFirst("div.card-footer").text()).text().replaceFirst("\\s*\\w+\\s+\\w+$", "");
-                    Card x = new Card(header,body,footer);
-                    card_array.add(x);
+                for(Element owo : cards){
+                    String subject = Jsoup.parse(owo.select("div.card-header p").first().text()).text();
+                    String teacher = Jsoup.parse(owo.select("div.card-header p").last().text()).text().replace("(email)","");
+                    String grades = Jsoup.parse(owo.select("div.card-body").text()).text();
+                    result.add(new Card(subject,teacher,grades));
                 }
-                return card_array;
-
             }
 
 
-
-        return null;
+            return result;
         }
         @Override
         protected void onPostExecute(ArrayList<Card> result){
-            ListView listView = getActivity().findViewById(R.id.listview);
-            listView.setAdapter(new CardAdapter(getActivity(),result));
-
+            ListView listView = getActivity().findViewById(R.id.grades_list);
+            listView.setAdapter(new GradesAdapter(getContext(),result));
 
         }
     }
     private Document Connect(Map<String,String> cookie){
         try {
-            Document doc = Jsoup.connect("https://is.jaroska.cz")
+            Document doc = Jsoup.connect("https://is.jaroska.cz/index.php?akce=650")
                     .cookies(cookie)
                     .get();
             return doc;
@@ -105,7 +93,5 @@ public class BulletinFragment extends Fragment {
         }
         return null;
     }
-
-
 
 }

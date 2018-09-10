@@ -9,11 +9,10 @@
     tools:context=".BulletinActivity"
     tools:showIn="@layout/app_bar_bulletin"
     android:layout_margin="10dp">
-    <fragment
+    <FrameLayout
+        android:id="@+id/contentFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/fragment"
-        android:name="com.example.lukaschroncschool.is_jaroska.BulletinFragment"
-        android:layout="@layout/fragment_bulletin"/>
+        android:layout_weight="1" />
 
 </LinearLayout>

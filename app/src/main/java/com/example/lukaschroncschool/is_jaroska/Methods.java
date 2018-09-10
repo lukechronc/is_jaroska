@@ -20,6 +20,7 @@ import org.jsoup.select.Elements;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
 public class Methods {
     public Activity activity;
@@ -29,7 +30,13 @@ public class Methods {
     }
 
     public void RunCookies(){
-        new getCookies().execute(new MyTaskParams("",""));
+        try{new getCookies().execute(new MyTaskParams("","")).get();}
+        catch (InterruptedException e){
+            e.printStackTrace();
+        }
+        catch (ExecutionException e){
+            e.printStackTrace();
+        }
     }
 
     private class getCookies extends AsyncTask<MyTaskParams, String, String> {
@@ -46,11 +53,9 @@ public class Methods {
                 Connection.Response res = Jsoup
                         .connect("https://is.jaroska.cz/login.php")
                         .data("formUsername", Hawk.get("username").toString())
-                        .data("formPassword",Hawk.get("password").toString())
-                        .method(Connection.Method.POST)
+                        .data("formPassword",Hawk.get("password").toString()).method(Connection.Method.POST)
                         .execute();
                 Map<String, String> loginCookies = res.cookies();
-                Hawk.put("cookies",loginCookies);
                 FastSave.getInstance().saveObject("login_cookie",loginCookies);
                 Map<String,String> owo = FastSave.getInstance().getObject("login_cookie",Map.class);
                 Document doc = Jsoup.connect("https://is.jaroska.cz")
@@ -73,10 +78,10 @@ public class Methods {
             if (result == null){
                 Snackbar.make(activity.findViewById(R.id.bulletin_container),"Žádné připojení k internetu",Snackbar.LENGTH_LONG).show();
             }
-            else{
+            /*else{
                 TextView tv = (TextView) activity.findViewById(R.id.user_textview);
                 tv.setText(result);
-            }
+            }*/
         }
 
     }

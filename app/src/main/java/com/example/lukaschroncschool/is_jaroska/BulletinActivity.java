@@ -3,6 +3,9 @@ package com.example.lukaschroncschool.is_jaroska;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -23,6 +26,7 @@ public class BulletinActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bulletin);
+
         // toolbar initialization
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -35,14 +39,24 @@ public class BulletinActivity extends AppCompatActivity
         toggle.syncState();
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        Methods m = new Methods(this);
+        m.RunCookies();
+        //fragment initialization
+        Fragment fragment = new BulletinFragment();
+
+        FragmentManager fm = getSupportFragmentManager();
+        FragmentTransaction transaction = fm.beginTransaction();
+        transaction.replace(R.id.contentFragment, fragment);
+        transaction.commit();
 
         // shared preferences library initialization
         Hawk.init(this).setEncryption(new NoEncryption()).build();
         FastSave.init(getApplicationContext());
 
-        Methods m = new Methods(this);
-        m.RunCookies();
 
+    }
+    @Override
+    public void onBackPressed() {
 
     }
 
@@ -50,19 +64,46 @@ public class BulletinActivity extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
+        Fragment bulletinFragment = new BulletinFragment();
+        Fragment suplFragment = new SuplFragment();
+        Fragment gradesFragment = new GradesFragment();
+
+
+
         int id = item.getItemId();
 
         if (id == R.id.nav_bulletin) {
+            getSupportActionBar().setTitle("Nástěnky");
+
+            FragmentManager fm = getSupportFragmentManager();
+            FragmentTransaction transaction = fm.beginTransaction();
+            transaction.replace(R.id.contentFragment, bulletinFragment);
+            transaction.commit();
 
         } else if (id == R.id.nav_supl) {
+            getSupportActionBar().setTitle("Suplování");
+            FragmentManager fm = getSupportFragmentManager();
+            FragmentTransaction transaction = fm.beginTransaction();
+            transaction.replace(R.id.contentFragment, suplFragment);
+            transaction.commit();
 
         } else if (id == R.id.nav_schedule_class) {
 
+
         } else if (id == R.id.nav_schedule_all) {
 
-        }else if (id == R.id.nav_grades) {
+            Intent aa = new Intent(this,WebViewActivity.class);
+            aa.putExtra("link","https://www.jaroska.cz/files/rozvrhy/rozvrh.htm");
+            startActivity(aa);
 
-        }else if (id == R.id.nav_settings) {
+        }else if (id == R.id.nav_grades) {
+            getSupportActionBar().setTitle("Klasifikace");
+
+            FragmentManager fm = getSupportFragmentManager();
+            FragmentTransaction transaction = fm.beginTransaction();
+            transaction.replace(R.id.contentFragment, gradesFragment);
+            transaction.commit();
+
 
         }else if (id == R.id.nav_logout) {
             Hawk.deleteAll();

@@ -30,34 +30,30 @@ public class LoginActivity extends AppCompatActivity {
     public CheckBox save;
 
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
-        Hawk.init(this).setEncryption(new NoEncryption()).build();
-
-            if( Hawk.contains("logged_in")){
-                new PostThatShit().execute(new MyTaskParams(Hawk.get("username").toString(),Hawk.get("password").toString()));
-            }
-
-
         username = findViewById(R.id.username);
         password = findViewById(R.id.password);
         save = findViewById(R.id.save);
 
-    }
+        Hawk.init(this).setEncryption(new NoEncryption()).build();
 
+        if (Hawk.contains("logged_in")) {
+            new PostThatShit().execute(new MyTaskParams(Hawk.get("username").toString(), Hawk.get("password").toString()));
+
+        }
+
+    }
     public void Login(View v){
 
-            new PostThatShit().execute(new MyTaskParams(username.getText().toString(), password.getText().toString()));
+        new PostThatShit().execute(new MyTaskParams(username.getText().toString(), password.getText().toString()));
 
     }
-
     private class PostThatShit extends AsyncTask<MyTaskParams, String, String> {
         private LoginActivity parent;
+
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -80,9 +76,10 @@ public class LoginActivity extends AppCompatActivity {
                 Elements elements = document.select("form");
 
                 if (elements.isEmpty()) {
-                    if(save.isChecked()){
-                        Hawk.put("username",usr);
-                        Hawk.put("password",pass);
+                    Hawk.put("username", usr);
+                    Hawk.put("password", pass);
+                    if (save.isChecked()) {
+
                         Hawk.put("logged_in", true);
                     }
                     startActivity(new Intent(LoginActivity.this, BulletinActivity.class));
@@ -99,25 +96,27 @@ public class LoginActivity extends AppCompatActivity {
             return null;
 
         }
-        protected void onPostExecute(String result){
+
+        protected void onPostExecute(String result) {
             if (result != null || result == "no_internet") {
-                Snackbar.make(findViewById(R.id.loginactivity),"Žádné připojení k internetu",Snackbar.LENGTH_LONG).show();
-            }
-            else if(result != null){
-                Snackbar.make(findViewById(R.id.loginactivity),result,Snackbar.LENGTH_LONG).show();
+                Snackbar.make(findViewById(R.id.loginactivity), "Žádné připojení k internetu", Snackbar.LENGTH_LONG).show();
+            } else if (result != null) {
+                Snackbar.make(findViewById(R.id.loginactivity), result, Snackbar.LENGTH_LONG).show();
             }
         }
+
     }
+
 
     private class MyTaskParams {
         String username;
         String password;
 
-        private MyTaskParams(String username, String password){
+        private MyTaskParams(String username, String password) {
             this.username = username;
             this.password = password;
 
         }
     }
-
 }
+
