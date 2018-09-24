@@ -42,7 +42,7 @@ public class SuplFragment extends Fragment {
         FastSave.init(getContext());
         ListView listview = (ListView) rootView.findViewById(R.id.link_list);
         //Methods m = new Methods(getActivity());
-        //m.RunCookies();
+        //m.runCookies();
         listview.setAdapter(new LinkAdapter(getContext(),new ArrayList<Link>()));
         new getCards().execute(FastSave.getInstance().getObject("login_cookie",Map.class));
 

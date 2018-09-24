@@ -40,7 +40,7 @@ public class BulletinActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         Methods m = new Methods(this);
-        m.RunCookies();
+        m.runCookies();
         //fragment initialization
         Fragment fragment = new BulletinFragment();
 
@@ -54,6 +54,18 @@ public class BulletinActivity extends AppCompatActivity
         FastSave.init(getApplicationContext());
 
 
+    }
+    @Override
+    protected void onStart(){
+        super.onStart();
+        Methods m = new Methods(this);
+        m.runCookies();
+    }
+    @Override
+    protected void onResume(){
+        super.onResume();
+        Methods m = new Methods(this);
+        m.runCookies();
     }
     @Override
     public void onBackPressed() {
@@ -88,6 +100,10 @@ public class BulletinActivity extends AppCompatActivity
             transaction.commit();
 
         } else if (id == R.id.nav_schedule_class) {
+            Intent owo = new Intent(this,WebViewActivity.class);
+            owo.putExtra("schedule",true);
+            startActivity(owo);
+
 
 
         } else if (id == R.id.nav_schedule_all) {

@@ -29,7 +29,7 @@ public class Methods {
         FastSave.init(activity);
     }
 
-    public void RunCookies(){
+    public void runCookies(){
         try{new getCookies().execute(new MyTaskParams("","")).get();}
         catch (InterruptedException e){
             e.printStackTrace();

@@ -40,7 +40,7 @@ public class GradesFragment extends Fragment {
         FastSave.init(getContext());
         ListView listview = (ListView) rootView.findViewById(R.id.grades_list);
         //Methods m = new Methods(getActivity());
-        //m.RunCookies();
+        //m.runCookies();
         listview.setAdapter(new LinkAdapter(getContext(),new ArrayList<Link>()));
         new getCards().execute(FastSave.getInstance().getObject("login_cookie",Map.class));
 
