@@ -100,16 +100,16 @@ public class BulletinActivity extends AppCompatActivity
             transaction.commit();
 
         } else if (id == R.id.nav_schedule_class) {
-            Intent owo = new Intent(this,WebViewActivity.class);
+           /* Intent owo = new Intent(this,WebViewActivity.class);
             owo.putExtra("schedule",true);
-            startActivity(owo);
+            startActivity(owo);*/
 
 
 
         } else if (id == R.id.nav_schedule_all) {
 
             Intent aa = new Intent(this,WebViewActivity.class);
-            aa.putExtra("link","https://www.jaroska.cz/files/rozvrhy/rozvrh.htm");
+            aa.putExtra("schedule",true);
             startActivity(aa);
 
         }else if (id == R.id.nav_grades) {

@@ -33,7 +33,7 @@ public class WebViewActivity extends AppCompatActivity {
                 wb.loadUrl("https://is.jaroska.cz/"+link);
             }
         }else{
-            new getSchedule().execute();
+            wb.loadUrl("https://www.jaroska.cz/files/rozvrhy/rozvrh.htm");
         }
 
 

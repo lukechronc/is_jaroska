@@ -67,7 +67,7 @@ public class GradesFragment extends Fragment {
                 for(Element owo : cards){
                     String subject = Jsoup.parse(owo.select("div.card-header p").first().text()).text();
                     String teacher = Jsoup.parse(owo.select("div.card-header p").last().text()).text().replace("(email)","");
-                    String grades = Jsoup.parse(owo.select("div.card-body").text()).text();
+                    String grades = "Hodnoceni: " + Jsoup.parse(owo.select("div.card-body span").text()).text();
                     result.add(new Card(subject,teacher,grades));
                 }
             }
