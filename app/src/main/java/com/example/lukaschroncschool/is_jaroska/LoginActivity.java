@@ -78,10 +78,8 @@ public class LoginActivity extends AppCompatActivity {
                 if (elements.isEmpty()) {
                     Hawk.put("username", usr);
                     Hawk.put("password", pass);
-                    if (save.isChecked()) {
+                    Hawk.put("logged_in", true);
 
-                        Hawk.put("logged_in", true);
-                    }
                     startActivity(new Intent(LoginActivity.this, BulletinActivity.class));
                 } else {
                     Element alert = document.select("div.alert.alert-warning strong").first();
